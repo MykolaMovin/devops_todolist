@@ -7,10 +7,18 @@ COPY requirements.txt .
 
 RUN pip install -r requirements.txt
 
-COPY . .
+FROM python:${PYTHON_VERSION}-slim AS run
+
+WORKDIR /app
 
 ENV APP_ENV="stage"
 ENV PYTHONUNBUFFERED=1
+
+COPY --from=build /install /usr/local
+
+COPY . .
+
+RUN python manage.py migrate
 
 EXPOSE 8080
 
