@@ -1,11 +1,13 @@
 ARG PYTHON_VERSION=3.8
 
-FROM python:${PYTHON_VERSION} AS base
+FROM python:${PYTHON_VERSION} AS build
+
 WORKDIR /app
 
 COPY requirements.txt .
 
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
+
 
 FROM python:${PYTHON_VERSION}-slim AS run
 
